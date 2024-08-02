@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('desc');
             $table->double('price');
             $table->integer('capacity');
+            
             $table->foreignId('hotel_id')->constrained('hotel');
             $table->timestamps();
         });

@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //user auth
-Route::post('generateOTP', [OTPController::class, 'generateOTP']);
+Route::post('userRegister', [UserController::class, 'userRegister']);
 Route::post('userLogin', [UserController::class, 'userLogin']);
 
 
@@ -51,6 +51,8 @@ Route::get('getMostPopularRooms', [RoomController::class, 'getMostPopularRooms']
 //user room
 Route::post('reserveRoom', [UserRoomController::class, 'reserveRoom']);
 Route::post('acceptRejectReservation', [UserRoomController::class, 'acceptRejectReservation']);
+Route::get('getHotelReservations/{id}', [UserRoomController::class, 'getHotelReservations']);
+
 
 
 

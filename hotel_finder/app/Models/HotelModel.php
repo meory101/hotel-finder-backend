@@ -10,4 +10,8 @@ class HotelModel extends Model
 {
     use HasFactory,HasApiTokens;
     protected $table = 'hotel';
+
+    public function room(){
+        return $this->hasMany(RoomModel::class,'id','hotel_id');
+    }
 }

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ToolModel extends Model
 {
     use HasFactory;
-    protected $table = 'view';
+    protected $table = 'tool';
 }

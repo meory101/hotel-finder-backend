@@ -9,4 +9,9 @@ class ImageModel extends Model
 {
     use HasFactory;
     protected $table = 'image';
+
+    public function room()
+    {
+        return $this->belongsTo(RoomModel::class, 'room_id', 'id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HotelModel;
 use App\Models\RoomModel;
 use App\Models\UserRoomModel;
 use Illuminate\Http\Request;
@@ -12,7 +13,14 @@ class UserRoomController extends Controller
     // 0 pending 1 accepted 2 rejected
     public function getHotelReservations($id)
     {
-        $pending_reservations = UserRoomModel::where('room_id.hotel_id', $id)->get();
+    //     $message =[];
+    //     $rooms = UserRoomModel::all();
+    //    for($i=0;$i<$rooms;$i++){
+    //     if($rooms[$i]->hotel->id == $id){
+    //         array_push($message,$rooms[$i]);
+    //     }
+    //    }
+    // return $reservation;
     }
 
     public function reserveRoom(Request $request)
@@ -31,8 +39,8 @@ class UserRoomController extends Controller
     {
         $user_room = UserRoomModel::find($request->id);
         $user_room->type = $request->type;
-        if($request->file('file')){
-           $file =  $request->file('file')->store('public');
+        if ($request->file('file')) {
+            $file =  $request->file('file')->store('public');
             $user_room->file = basename($file);
         }
         $user_room = $user_room->save();

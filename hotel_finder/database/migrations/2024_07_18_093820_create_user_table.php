@@ -6,16 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
+
     public function up(): void
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
-            $table->string('number');
-            $table->string('name')->nullable();
-            $table->string('email')->nullable();
+            $table->string('name');
+            $table->string('email');
+            $table->string('password');
             $table->string('image')->nullable();
-            $table->enum('gender',[0,1])->default(0);
+            $table->string('number')->nullable();
+            $table->enum('gender', [0, 1]);
             $table->string('birthdate')->nullable();
             $table->timestamps();
         });
