@@ -13,7 +13,9 @@ class UserController extends Controller
 {
     public function userLogin(Request $request)
     {
+
         $user = UserModel::where('email', $request->email)->first();
+        // return $user;
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {

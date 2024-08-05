@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HotelModel;
+use App\Models\ImageModel;
 use App\Models\RoomModel;
 use App\Models\UserRoomModel;
 use Illuminate\Http\Request;
@@ -13,25 +14,42 @@ class UserRoomController extends Controller
     // 0 pending 1 accepted 2 rejected
     public function getHotelReservations($id)
     {
-    //     $message =[];
-    //     $rooms = UserRoomModel::all();
-    //    for($i=0;$i<$rooms;$i++){
-    //     if($rooms[$i]->hotel->id == $id){
-    //         array_push($message,$rooms[$i]);
-    //     }
-    //    }
-    // return $reservation;
+        //     $message =[];
+        //     $rooms = UserRoomModel::all();
+        //    for($i=0;$i<$rooms;$i++){
+        //     if($rooms[$i]->hotel->id == $id){
+        //         array_push($message,$rooms[$i]);
+        //     }
+        //    }
+        // return $reservation;
     }
 
     public function reserveRoom(Request $request)
     {
         $user_room = new UserRoomModel;
         $user_room->date  = $request->date;
+        $user_room->nights  = $request->nights;
         $user_room->room_id  = $request->room_id;
         $user_room->user_id  = $request->user_id;
         $user_room = $user_room->save();
         if ($user_room) {
             return response()->json([], 200);
+        }
+        return response()->json([], 500);
+    }
+
+    public function getUserReservations($id){
+        $message = [];
+        $user_room =  UserRoomModel::where('user_id',$id)->get();
+        for ($j = 0; $j < count($user_room); $j++) {
+            array_push($message,[
+                'data' => $user_room[$j],
+                'image'=>  ImageModel::where('room_id', $user_room[$j]->room_id)->get(),
+                'room' =>RoomModel::where('id', $user_room[$j]->room_id)->first()]
+            );
+        }
+        if ($user_room) {
+            return response()->json($message, 200);
         }
         return response()->json([], 500);
     }

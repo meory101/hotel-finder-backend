@@ -50,6 +50,7 @@ Route::get('getMostPopularRooms', [RoomController::class, 'getMostPopularRooms']
 
 //user room
 Route::post('reserveRoom', [UserRoomController::class, 'reserveRoom']);
+Route::get('getUserReservations/{id}', [UserRoomController::class, 'getUserReservations']);
 Route::post('acceptRejectReservation', [UserRoomController::class, 'acceptRejectReservation']);
 Route::get('getHotelReservations/{id}', [UserRoomController::class, 'getHotelReservations']);
 
