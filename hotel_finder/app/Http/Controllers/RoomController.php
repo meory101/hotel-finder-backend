@@ -113,6 +113,7 @@ class RoomController extends Controller
                 => RoomToolModel::where('room_id', $rooms[$i]->id)->get(),
             ]);
         }
+       
         if ($rooms) {
             return json_encode($message);
         }
