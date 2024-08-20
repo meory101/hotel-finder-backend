@@ -33,6 +33,7 @@ Route::post('userLogin', [UserController::class, 'userLogin']);
 //hotel auth 
 Route::post('hotelLogin', [HotelController::class, 'hotelLogin']);
 Route::post('hotelRegister', [HotelController::class, 'hotelRegister']);
+Route::get('getHotelProfile/{id}', [HotelController::class, 'getHotelProfile']);
 
 
 //user profile
@@ -45,6 +46,7 @@ Route::post('updateRoom', [RoomController::class, 'updateRoom']);
 Route::get('getRoomByHotelId/{id}', [RoomController::class, 'getRoomByHotelId']);
 Route::get('getRooms', [RoomController::class, 'getRooms']);
 Route::get('getMostPopularRooms', [RoomController::class, 'getMostPopularRooms']);
+Route::post('searchRooms', [RoomController::class, 'searchRooms']);
 
 
 

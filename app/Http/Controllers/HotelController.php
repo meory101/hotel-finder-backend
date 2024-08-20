@@ -54,4 +54,13 @@ class HotelController extends Controller
 
         return response()->json([], 500);
     }
+
+    public function getHotelProfile($id)
+    {
+        $hotel = HotelModel::find($id);
+        if ($hotel) {
+            return response()->json($hotel, 200);
+        }
+        return response()->json([], 500);
+    }
 }

@@ -18,12 +18,8 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
-            AttributeSeed::class,
             ViewSeed::class,
             ToolSeed::class,
-            AttributeViewSeed::class,
-            AttributeToolSeed::class,
-
         ]);
     }
 }

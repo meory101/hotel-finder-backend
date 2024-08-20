@@ -9,4 +9,6 @@ class ViewModel extends Model
 {
     use HasFactory;
     protected $table = 'view';
+
+
 }

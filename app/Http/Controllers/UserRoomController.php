@@ -14,14 +14,19 @@ class UserRoomController extends Controller
     // 0 pending 1 accepted 2 rejected
     public function getHotelReservations($id)
     {
-        //     $message =[];
-        //     $rooms = UserRoomModel::all();
-        //    for($i=0;$i<$rooms;$i++){
-        //     if($rooms[$i]->hotel->id == $id){
-        //         array_push($message,$rooms[$i]);
-        //     }
-        //    }
-        // return $reservation;
+        $message = [];
+        $rooms = RoomModel::where('hotel_id', $id)->get();
+        for ($i = 0; $i < count($rooms); $i++) {
+            array_push($message, [
+                'room' => $rooms[$i],
+                'reservations' => UserRoomModel::where('room_id', $rooms[$i]->id)->get()
+            ]);
+        }
+            if($message){
+            return response()->json($message, 200);
+
+            }
+        return response()->json([], 500);
     }
 
     public function reserveRoom(Request $request)
@@ -38,14 +43,18 @@ class UserRoomController extends Controller
         return response()->json([], 500);
     }
 
-    public function getUserReservations($id){
+    public function getUserReservations($id)
+    {
         $message = [];
-        $user_room =  UserRoomModel::where('user_id',$id)->get();
+        $user_room =  UserRoomModel::where('user_id', $id)->get();
         for ($j = 0; $j < count($user_room); $j++) {
-            array_push($message,[
-                'data' => $user_room[$j],
-                'image'=>  ImageModel::where('room_id', $user_room[$j]->room_id)->get(),
-                'room' =>RoomModel::where('id', $user_room[$j]->room_id)->first()]
+            array_push(
+                $message,
+                [
+                    'data' => $user_room[$j],
+                    'image' =>  ImageModel::where('room_id', $user_room[$j]->room_id)->get(),
+                    'room' => RoomModel::where('id', $user_room[$j]->room_id)->first()
+                ]
             );
         }
         if ($user_room) {

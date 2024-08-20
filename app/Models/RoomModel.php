@@ -26,4 +26,13 @@ class RoomModel extends Model
     {
         return $this->hasMany(ImageModel::class, 'id', 'room_id');
     }
+
+
+    public function view(){
+        return $this->hasMany(ViewModel::class,'view_id','id');
+    }
+    public function tool()
+    {
+        return $this->hasMany(ToolModel::class, 'tool_id', 'id');
+    }
 }
