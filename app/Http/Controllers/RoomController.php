@@ -9,8 +9,11 @@ use App\Models\RoomToolModel;
 use App\Models\RoomViewModel;
 use App\Models\ToolModel;
 use App\Models\ViewModel;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use PhpParser\JsonDecoder;
 
 class RoomController extends Controller
 {
@@ -221,28 +224,39 @@ class RoomController extends Controller
     }
 
 
-    public function searchRooms(Request $request)
+    public function getMostReleventRooms(Request $request)
     {
-        $relatedRooms = [];
-        $rooms = RoomModel::all();
-
-        for ($i = 0; $i < count($request->tags); $i++) {
-            for ($j = 0; $j < count($rooms); $j++) {
-
-                if (similar_text($request->tags[$i], $rooms[$j]->name, $percent) >= 6) {
-                    array_push($relatedRooms, $rooms[$j]);
-                    continue;
-                }
-                if (similar_text($request->tags[$i], $rooms[$j]->desc, $percent) >= 8) {
-                    array_push($relatedRooms, $rooms[$j]);
-                    continue;
-                }
-                if ($request->tags[$i] == $rooms[$j]->capacity) {
-                    array_push($relatedRooms, $rooms[$j]);
-                    continue;
-                }
+        $message= [];
+        $vnames = [];
+        $tnames = [];
+        $response = Http::asForm()->post('http://10.2.0.2:5000/api/getMostReleventRooms', ['searchQuery' => $request->searchQuery]);
+        $response =  json_decode(($response)['releventRoomsIds'],true);
+        $response =  $response['docno'];
+        $ids = array_values($response);    
+        for($i=0;$i<count($ids);$i++){
+            $view =   RoomViewModel::where('room_id', $ids[$i])->get();
+            $tools = RoomToolModel::where('room_id', $ids[$i])->get();
+            for ($j = 0; $j < count($view); $j++) {
+                array_push($vnames, ViewModel::where('id', $view[$j]->view_id)->first());
             }
+            for ($t = 0; $t < count($tools); $t++) {
+                array_push($tnames, ToolModel::where('id', $tools[$t]->tool_id)->first());
+            }
+            array_push($message, [
+                'room' => RoomModel::find($ids[$i]),
+                'image' => ImageModel::where('room_id', $ids[$i])->get(),
+
+                'rate'
+                => RateModel::where('room_id', $ids[$i])->get()->pluck('value')->avg(),
+                'view' => $view,
+                'vnames' => $vnames,
+                'tnames' => $tnames,
+                'tool'
+                => RoomToolModel::where('room_id', $ids[$i])->get(),
+            ]);
         }
-        return $relatedRooms;
+        return
+        array_map("unserialize", array_unique(array_map("serialize", $message)));
     }
 }
+        
