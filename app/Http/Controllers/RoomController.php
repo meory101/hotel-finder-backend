@@ -226,14 +226,14 @@ class RoomController extends Controller
 
     public function getMostReleventRooms(Request $request)
     {
-        $message= [];
+        $message = [];
         $vnames = [];
         $tnames = [];
-        $response = Http::asForm()->post('http://10.2.0.2:5000/api/getMostReleventRooms', ['searchQuery' => $request->searchQuery]);
-        $response =  json_decode(($response)['releventRoomsIds'],true);
+        $response = Http::asForm()->post('http://10.2.0.2:5000/api/getMostReleventRooms', ['searchQuery' => $request->searchQuery ?? ""]);
+        $response =  json_decode(($response)['releventRoomsIds'], true);
         $response =  $response['docno'];
-        $ids = array_values($response);    
-        for($i=0;$i<count($ids);$i++){
+        $ids = array_values($response);
+        for ($i = 0; $i < count($ids); $i++) {
             $view =   RoomViewModel::where('room_id', $ids[$i])->get();
             $tools = RoomToolModel::where('room_id', $ids[$i])->get();
             for ($j = 0; $j < count($view); $j++) {
@@ -256,7 +256,6 @@ class RoomController extends Controller
             ]);
         }
         return
-        array_map("unserialize", array_unique(array_map("serialize", $message)));
+            array_map("unserialize", array_unique(array_map("serialize", $message)));
     }
 }
-        
