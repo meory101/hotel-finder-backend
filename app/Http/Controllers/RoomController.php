@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HotelModel;
 use App\Models\ImageModel;
 use App\Models\RateModel;
 use App\Models\RoomModel;
@@ -175,6 +176,8 @@ class RoomController extends Controller
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
+                'hotel' => HotelModel::find($rooms[$i]->hotel_id),
+
                 'tool'
                 => RoomToolModel::where('room_id', $rooms[$i]->id)->get(),
             ]);
@@ -210,6 +213,7 @@ class RoomController extends Controller
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
+                'hotel' => HotelModel::find($rooms[$i]->hotel_id),
                 'tool'
                 => RoomToolModel::where('room_id', $rooms[$i]->id)->get(),
             ]);
@@ -251,6 +255,8 @@ class RoomController extends Controller
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
+                'hotel' => RoomModel::find($ids[$i])->hotel_id,
+
                 'tool'
                 => RoomToolModel::where('room_id', $ids[$i])->get(),
             ]);
