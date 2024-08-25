@@ -47,6 +47,7 @@ Route::get('getRoomByHotelId/{id}', [RoomController::class, 'getRoomByHotelId'])
 Route::get('getRooms', [RoomController::class, 'getRooms']);
 Route::get('getMostPopularRooms', [RoomController::class, 'getMostPopularRooms']);
 Route::post('getMostReleventRooms', [RoomController::class, 'getMostReleventRooms']);
+Route::post('rateRoom', [RoomController::class, 'rateRoom']);
 
 
 

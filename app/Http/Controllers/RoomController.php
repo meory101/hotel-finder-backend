@@ -95,6 +95,8 @@ class RoomController extends Controller
                 array_push($tnames, ToolModel::where('id', $tools[$t]->tool_id)->first());
             }
             array_push($message, [
+                'hotel' => HotelModel::find($rooms[$i]->hotel_id),
+
                 'room' => $rooms[$i],
                 'image' => ImageModel::where('room_id', $rooms[$i]->id)->get(),
 
@@ -137,10 +139,11 @@ class RoomController extends Controller
                 'image' => ImageModel::where('room_id', $rooms[$i]->id)->get(),
 
                 'rate'
-                => RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(),
+                => round(RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(), 2),
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
+                'hotel' => HotelModel::find($rooms[$i]->hotel_id),
                 'tool'
                 => RoomToolModel::where('room_id', $rooms[$i]->id)->get(),
             ]);
@@ -172,7 +175,7 @@ class RoomController extends Controller
                 'image' => ImageModel::where('room_id', $rooms[$i]->id)->get(),
 
                 'rate'
-                => RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(),
+                => round(RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(), 2),
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
@@ -209,7 +212,7 @@ class RoomController extends Controller
                 'image' => ImageModel::where('room_id', $rooms[$i]->id)->get(),
 
                 'rate'
-                => RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(),
+                => round(RateModel::where('room_id', $rooms[$i]->id)->get()->pluck('value')->avg(), 2),
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
@@ -251,7 +254,7 @@ class RoomController extends Controller
                 'image' => ImageModel::where('room_id', $ids[$i])->get(),
 
                 'rate'
-                => RateModel::where('room_id', $ids[$i])->get()->pluck('value')->avg(),
+                => round(RateModel::where('room_id', $ids[$i])->get()->pluck('value')->avg(), 2),
                 'view' => $view,
                 'vnames' => $vnames,
                 'tnames' => $tnames,
@@ -263,5 +266,20 @@ class RoomController extends Controller
         }
         return
             array_map("unserialize", array_unique(array_map("serialize", $message)));
+    }
+
+
+
+    public function rateRoom(Request $request)
+    {
+        $rate  = new RateModel;
+        $rate->value = $request->value;
+        $rate->room_id = $request->room_id;
+        $rate->user_id = $request->user_id;
+        $rate = $rate->save();
+        if ($rate) {
+            return response()->json([], 200);
+        }
+        return response()->json([], 500);
     }
 }
