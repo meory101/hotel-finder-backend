@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('date');
             $table->string('file')->nullable();
-            $table->enum('type', [0,1,2])->default(0);
+            $table->enum('type', [0, 1, 2])->default(0);
             $table->foreignId('room_id')->constrained('room');
             $table->foreignId('user_id')->constrained('user');
             $table->timestamps();
